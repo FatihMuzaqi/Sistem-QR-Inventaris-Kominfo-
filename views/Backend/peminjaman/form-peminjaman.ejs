@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Peminjaman Inventaris</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .form-container {
+      max-width: 800px;
+      margin: 40px auto;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .form-header {
+      background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+      color: white;
+      padding: 25px;
+      text-align: center;
+      position: relative;
+    }
+    
+    .form-header h2 {
+      margin: 0;
+      font-weight: 700;
+    }
+    
+    .form-header p {
+      margin-bottom: 0;
+      opacity: 0.8;
+    }
+    
+    .form-body {
+      background-color: white;
+      padding: 30px;
+    }
+    
+    .form-control, .form-select {
+      border-radius: 8px;
+      padding: 12px 15px;
+      border: 1px solid #e1e5eb;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+      border-color: #4e73df;
+      box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.25);
+    }
+    
+    .form-label {
+      font-weight: 600;
+      color: #495057;
+      margin-bottom: 8px;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+      border: none;
+      border-radius: 8px;
+      padding: 12px 25px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #224abe 0%, #1a3a94 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(78, 115, 223, 0.4);
+    }
+    
+    .feature-icon {
+      background-color: rgba(78, 115, 223, 0.1);
+      color: #4e73df;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+    }
+    
+    .form-footer {
+      background-color: #f8f9fa;
+      padding: 20px 30px;
+      text-align: center;
+      border-top: 1px solid #e1e5eb;
+    }
+    
+    .form-section {
+      margin-bottom: 20px;
+    }
+    
+    .input-group-text {
+      background-color: #f8f9fa;
+      border: 1px solid #e1e5eb;
+      border-radius: 8px 0 0 8px;
+    }
+    
+    .input-group .form-control {
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .section-divider {
+      display: flex;
+      align-items: center;
+      margin: 25px 0;
+    }
+    
+    .section-divider::before, .section-divider::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid #e1e5eb;
+    }
+    
+    .section-divider-text {
+      padding: 0 10px;
+      color: #6c757d;
+      font-weight: 600;
+    }
+    
+    .info-text {
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+    
+    .required-asterisk {
+      color: red;
+      margin-left: 3px;
+    }
+    
+    .card-hover {
+      transition: transform 0.3s ease;
+    }
+    
+    .card-hover:hover {
+      transform: translateY(-5px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="form-container">
+      <!-- Form Header -->
+      <div class="form-header">
+        <h2><i class="fas fa-clipboard-list me-2"></i> Formulir Peminjaman Inventaris</h2>
+        <p>Lengkapi informasi untuk meminjam barang inventaris</p>
+      </div>
+      
+      <!-- Form Body -->
+      <div class="form-body">
+        <form action="/add-peminjaman" method="POST" id="peminjamanForm">
+        
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <div class="d-flex align-items-center mb-3">
+                <div class="feature-icon">
+                  <i class="fas fa-info-circle"></i>
+                </div>
+                <h5 class="mb-0">Informasi Peminjaman</h5>
+              </div>
+            </div>
+            
+            <div class="col-md-12 mb-3">
+              <label for="inventarisBarangId" class="form-label">Pilih Barang <span class="required-asterisk">*</span></label>
+              <div class="input-group">
+                <div class="input-group">
+                  <input type="hidden" class="form-control" id="inventarisBarangId" name="inventarisBarangId" value="<%= produks.id %>" required>
+                  <span class="form-control"><%= produks.nama_barang %></span>
+                </div>
+              </div>
+              <small class="info-text">Status ketersediaan barang diperbarui secara real-time</small>
+            </div>
+
+            <div class="col-md-12 mb-3">
+              <label for="penanggungJawabId" class="form-label">Penanggung Jawab <span class="required-asterisk">*</span></label>
+              <div class="input-group">
+                <div class="input-group">
+                  <input type="hidden" class="form-control" id="penanggungJawabId" name="penanggungJawabId" value="<%= produks.penanggungJawab.id %>" required>
+                  <span class="form-control"><%= produks.penanggungJawab.nama %></span>
+                </div>
+              </div>
+              <small class="info-text">Status ketersediaan barang diperbarui secara real-time</small>
+            </div>
+          </div>
+          
+          <div class="section-divider">
+            <span class="section-divider-text">Data Peminjam</span>
+          </div>
+          
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <div class="d-flex align-items-center mb-3">
+                <div class="feature-icon">
+                  <i class="fas fa-user"></i>
+                </div>
+                <h5 class="mb-0">Data Diri Peminjam</h5>
+              </div>
+            </div>
+            
+            <div class="col-md-12 mb-3">
+              <label for="nama_peminjam" class="form-label">Nama <span class="required-asterisk">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                <input type="text" class="form-control" id="nama_peminjam" name="nama_peminjam" value=" <%= users.name  %>" required />
+              </div>
+            </div>
+            
+            <div class="col-md-12 mb-3">
+              <label for="email_peminjam" class="form-label">Email <span class="required-asterisk">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                <input type="email" class="form-control" id="email_peminjam" name="email_peminjam" value="<%= users.email  %>" required />
+              </div>
+            </div>
+          
+          <div class="section-divider">
+            <span class="section-divider-text">Detail Peminjaman</span>
+          </div>
+          
+          <!-- Detail Peminjaman -->
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <div class="d-flex align-items-center mb-3">
+                <div class="feature-icon">
+                  <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h5 class="mb-0">Waktu Peminjaman</h5>
+              </div>
+            </div>
+            
+            <!-- Tanggal Pinjam & Kembali dalam 1 row -->
+            <div class="col-md-6 mb-3">
+              <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam <span class="required-asterisk">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-calendar-plus"></i></span>
+                <input type="date" class="form-control" id="tanggal_pinjam" name="tanggal_pinjam" required />
+              </div>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <label for="tanggal_kembali" class="form-label">Tanggal Kembali <span class="required-asterisk">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-calendar-check"></i></span>
+                <input type="date" class="form-control" id="tanggal_kembali" name="tanggal_kembali" required />
+              </div>
+              <small class="info-text">Maksimal 7 hari peminjaman</small>
+            </div>
+            
+            <!-- Keperluan -->
+            <div class="col-md-12 mb-3">
+              <label for="keperluan" class="form-label">Keperluan Peminjaman <span class="required-asterisk">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-align-left"></i></span>
+                <textarea class="form-control" id="keperluan" name="keperluan" rows="3" placeholder="Jelaskan keperluan peminjaman barang" required></textarea>
+              </div>
+            </div>
+            <input type="hidden" class="form-control" id="status_peminjaman" name="status_peminjaman" value="Pending" required />
+          
+          <div class="d-grid gap-2 mb-3">
+            <button type="submit" class="btn btn-primary btn-lg">
+              <i class="fas fa-paper-plane me-2"></i> Ajukan Peminjaman
+            </button>
+          </div>
+          
+          <div class="text-center info-text">
+            <i class="fas fa-info-circle me-1"></i> Pengajuan peminjaman akan diproses dalam 1x24 jam kerja
+          </div>
+        </form>
+      </div>
+      <!-- Form Footer -->
+    </div>
+    
+
+  </div>
+  
+  <!-- Modal Persyaratan -->
+  
+  
+  <!-- Bootstrap JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Validasi tanggal kembali harus lebih besar dari tanggal pinjam
+    document.getElementById('tanggal_pinjam').addEventListener('change', function() {
+      document.getElementById('tanggal_kembali').min = this.value;
+      
+      // Set tanggal kembali otomatis 7 hari setelah tanggal pinjam
+      let tanggalPinjam = new Date(this.value);
+      let tanggalKembali = new Date(tanggalPinjam);
+      tanggalKembali.setDate(tanggalPinjam.getDate() + 7);
+      
+      let month = ('0' + (tanggalKembali.getMonth() + 1)).slice(-2);
+      let day = ('0' + tanggalKembali.getDate()).slice(-2);
+      let formattedDate = tanggalKembali.getFullYear() + '-' + month + '-' + day;
+      
+      document.getElementById('tanggal_kembali').value = formattedDate;
+    });
+    
+    // Set tanggal minimal ke hari ini
+    let today = new Date();
+    let month = ('0' + (today.getMonth() + 1)).slice(-2);
+    let day = ('0' + today.getDate()).slice(-2);
+    let formattedDate = today.getFullYear() + '-' + month + '-' + day;
+    document.getElementById('tanggal_pinjam').min = formattedDate;
+  </script>
+</body>
+</html>

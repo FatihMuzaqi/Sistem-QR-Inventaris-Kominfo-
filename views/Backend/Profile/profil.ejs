@@ -1,0 +1,53 @@
+
+    <div class="container-xl px-4 mt-n10">
+        <div class="dashboard-container">
+            <div class="profile-card">
+                <!-- Profile Header -->
+                <div class="profile-header">
+                    <img src="https://images.icon-icons.com/1378/PNG/512/avatardefault_92824.png" 
+                         alt="Profile Picture" class="profile-avatar" id="profileImage">
+                    <h2 class="profile-name text-light" id="profileName"><%= user.name  %></h2>
+                    <p class="profile-email" id="profileEmail"><%= user.email  %></p>
+                </div>
+                
+                <!-- Profile Body -->
+                <div class="profile-body">
+                    <!-- Name Info -->
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="info-content">
+                            <div class="info-label">Full Name</div>
+                            <p class="info-value" id="displayName"><%= user.name  %></p>
+                        </div>
+                    </div>
+                    
+                    <!-- Email Info -->
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="info-content">
+                            <div class="info-label">Email Address</div>
+                            <p class="info-value" id="displayEmail"><%= user.email  %></p>
+                        </div>
+                    </div>
+                    
+                    <!-- Role Info -->
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="info-content">
+                            <div class="info-label">Role</div>
+                            <span class="role-badge role-admin" id="displayRole"><%= user.role  %></span>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>

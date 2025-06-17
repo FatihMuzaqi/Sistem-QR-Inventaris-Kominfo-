@@ -1,0 +1,66 @@
+
+
+<%
+function getBadgeColorStatus(lv) {
+    if (lv === 'Tersedia') return 'bg-success';
+    if (lv === 'Dipinjam') return 'bg-warning';
+    if (lv === 'Ditolak') return 'bg-danger';
+    if (lv === 'Hilang') return 'bg-secondary';
+    if (lv === 'Pending') return 'bg-info';
+    return 'bg-secondary';
+}
+%>
+<div class="container-xl px-4 mt-n10">
+            <div class="card mb-4">
+                <div class="card-header">Extended Data Tables</div>
+                <div class="card-body">
+                    <table id="datatablesSimple">
+                    
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Tambah Data
+                        </button>
+
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Barang</th>
+                                <th>Nama Pinjam</th>
+                                <th>Email Peminjam</th>
+                                <th>Tangal Pinjam</th>
+                                <th>Tanggal Kembali</th>
+                                <th>Keperluan</th>
+                                <th>Status Peminjaman</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% datas.forEach((dat, index) => { %>
+                                <tr>
+                                    <td><%= index + 1 %></td>
+                                    <td><%= dat.inventarisBarangId %></td>
+                                    <td><%= dat.nama_peminjam %></td>
+                                    <td><%= dat.email_peminjam %></td>
+                                    <td><%= dat.tanggal_pinjam %></td>
+                                    <td><%= dat.tanggal_kembali %></td>
+                                    <td><%= dat.keperluan  %></td>
+                                    <td>
+                                        <div class="badge <%= getBadgeColorStatus(dat.status_peminjaman) %> text-white rounded-pill">
+                                        <%= dat.status_peminjaman %>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-datatable btn-icon btn-transparent-dark me-2"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                                        <button class="btn btn-datatable btn-icon btn-transparent-dark"><i class="fa-regular fa-trash-can"></i></button>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <% if(user.role === "User") { %>
+                <a href="/dashboard-user" class="btn btn-primary">Kembali</a>
+            <%} else { %>
+                <a href="/dashboard" class="btn btn-primary">Kembali</a>
+            <%}%>
+        </div>

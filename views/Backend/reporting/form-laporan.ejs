@@ -1,0 +1,450 @@
+
+
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Laporan Kerusakan Barang</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+           
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .form-container {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+        }
+
+        .form-container:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+            color: white;
+            padding: 25px;
+            padding: 2rem;
+            margin: -1.5rem -1.5rem 2rem -1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-header h5 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-header .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-label i {
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        .form-control::placeholder {
+            color: #adb5bd;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .btn-submit {
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-submit:hover::before {
+            left: 100%;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .alert-success {
+            background: var(--success-gradient);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            background: rgba(102, 126, 234, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .file-upload-label:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: #5a67d8;
+            transform: translateY(-2px);
+        }
+
+        .file-upload-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .file-upload-icon {
+            font-size: 2rem;
+            color: #667eea;
+        }
+
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 10%;
+            animation-delay: -5s;
+        }
+
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+                opacity: 0.8;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                margin: 1rem;
+                border-radius: 15px;
+            }
+            
+            .form-header {
+                padding: 1.5rem;
+            }
+            
+            .form-header h5 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="container d-flex justify-content-center align-items-center min-vh-100 py-4">
+        <div class="form-container p-4 w-100" style="max-width: 600px;">
+            <% if (messages.success) { %>
+                <div class="alert alert-success" role="alert">
+                    <%= messages.success %>
+                </div>
+            <% } %>
+            <form enctype="multipart/form-data" method="POST" action="/laporkanBarang/<%= datas.id  %>">
+                <div class="form-header">
+                    <h5>
+                        <i class="fas fa-clipboard-check me-2"></i>
+                        Form Laporan Kerusakan Barang
+                    </h5>
+                    <div class="subtitle">Laporkan kondisi barang dengan detail yang akurat</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nama_barang" class="form-label">
+                        <i class="fas fa-box"></i>
+                        Nama Barang
+                    </label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="nama_barang" value="<%= datas.nama_barang  %>" name="nama_barang" placeholder="Masukkan nama barang" required>
+                        <i class="fas fa-tag input-icon"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="penanggung_jawab" class="form-label">
+                        <i class="fas fa-user-tie"></i>
+                        Penanggung Jawab
+                    </label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="penanggung_jawab" value="<%= datas.penanggungJawab.nama %>" name="penanggung_jawab" placeholder="Nama penanggung jawab" required>
+                        <i class="fas fa-user input-icon"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="kondisi_laporan" class="form-label">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Laporkan Kondisi Saat ini
+                    </label>
+                    <select class="form-select" id="kondisi_laporan" name="kondisi_laporan" required>
+                        value="" disabled selected><%= datas.kondisi  %>
+                        <option value="Baik">✅ Baik</option>
+                        <option value="Perlu Perbaikan">⚠️ Perlu Perbaikan</option>
+                        <option value="Rusak">❌ Rusak</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="deskripsi" class="form-label">
+                        <i class="fas fa-file-alt"></i>
+                        Deskripsi Kerusakan
+                    </label>
+                    <textarea class="form-control" id="deskripsi" name="deskripsi" rows="4" placeholder="Jelaskan kondisi kerusakan secara detail..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="tanggal_laporan" class="form-label">
+                        <i class="fas fa-calendar-alt"></i>
+                        Tanggal Laporan
+                    </label>
+                    <div class="input-group">
+                        <input type="date" class="form-control" id="tanggal_laporan" name="tanggal_laporan" required>
+                        <i class="fas fa-clock input-icon"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="images" class="form-label">
+                        <i class="fas fa-camera"></i>
+                        Foto Kerusakan (opsional)
+                    </label>
+                    <div class="file-upload">
+                        <input type="file" class="form-control" id="images" name="images" accept="image/*">
+                        <label for="images" class="file-upload-label">
+                            <div class="file-upload-content">
+                                <i class="fas fa-cloud-upload-alt file-upload-icon"></i>
+                                <div>
+                                    <strong>Klik untuk upload foto</strong>
+                                    <br>
+                                    <small class="text-muted">atau drag & drop file disini</small>
+                                </div>
+                                <small class="text-muted">PNG, JPG hingga 10MB</small>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-paper-plane me-2"></i>
+                    Kirim Laporan
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Set current date as default
+        document.getElementById('tanggal_laporan').valueAsDate = new Date();
+
+        // File upload preview
+        document.getElementById('images').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const label = document.querySelector('.file-upload-label');
+            
+            if (file) {
+                label.innerHTML = `
+                    <div class="file-upload-content">
+                        <i class="fas fa-check-circle file-upload-icon text-success"></i>
+                        <div>
+                            <strong>${file.name}</strong>
+                            <br>
+                            <small class="text-success">File berhasil dipilih</small>
+                        </div>
+                    </div>
+                `;
+                label.style.background = 'rgba(40, 167, 69, 0.1)';
+                label.style.borderColor = '#28a745';
+            }
+        });
+
+        // Form animation on submit
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const button = document.querySelector('.btn-submit');
+            button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Mengirim...';
+            button.disabled = true;
+        });
+
+        // Add floating animation to form elements
+        const formElements = document.querySelectorAll('.form-control, .form-select');
+        formElements.forEach((element, index) => {
+            element.style.animationDelay = `${index * 0.1}s`;
+            element.classList.add('animate__animated', 'animate__fadeInUp');
+        });
+    </script>
+</body>
+</html>

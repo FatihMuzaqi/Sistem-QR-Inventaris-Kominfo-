@@ -1,0 +1,302 @@
+<%
+function getBadgeColor(kondisi) {
+    if (kondisi === 'Baik') return 'bg-success';   // Hijau
+    if (kondisi === 'Perlu Perbaikan') return 'bg-warning';  // Kuning
+    if (kondisi === 'Rusak') return 'bg-danger';    // Merah
+    return 'bg-secondary';                        // Abu-abu kalau tidak dikenal
+}
+%>
+
+
+<%
+function getBadgeColorStatus(lv) {
+    if (lv === 'Tersedia') return 'bg-success';   // Hijau
+    if (lv === 'Dipinjam') return 'bg-warning';  // Kuning
+    if (lv === 'Hilang') return 'bg-danger';    // Merah
+    return 'bg-secondary';                        // Abu-abu kalau tidak dikenal
+}
+%>
+
+<!-- Main page content-->
+        <div class="container-xl px-4 mt-n10">
+            <div class="card mb-4">
+                <div class="card-header">Extended Data Tables</div>
+                <div class="card-body">
+                    <table id="datatablesSimple">
+                    
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Tambah Data
+                        </button>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Kode</th>
+                                <th>Kategori</th>
+                                <th>Tgl Masuk</th>
+                                <th>Kondisi</th>
+                                <th>Status</th>
+                                <th>Penaggung Jawab</th>
+                                <th>Stock</th>
+                                <th>Gambar</th>
+                                <th>Actions</th>
+                                <th>Generate QR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% datas.forEach((dat, index) => { %>
+                                <tr>
+                                    <td><%= index + 1 %></td>
+                                    <td><%= dat.nama_barang %></td>
+                                    <td><%= dat.kode_barang %></td>
+                                    <td><%= dat.kategori %></td>
+                                    <td><%= dat.tanggal_masuk %></td>
+                                    <td><div class="badge <%= getBadgeColor(dat.kondisi) %> text-white rounded-pill"><%= dat.kondisi %></div></td>
+                                    <td><div class="badge <%= getBadgeColorStatus(dat.status)%> text-white rounded-pill"><%= dat.status %></div></td>
+                                    <td><%= dat.penanggungJawab.nama  %></td>
+                                    <th><%= dat.stok %></th>
+                                    <th><%= dat.image  %></th>
+                                    <td>
+                                        <!-- <a href="/inventaris/<%= dat.id %>" class="btn btn-datatable btn-icon btn-transparent-dark me-2" title="Lihat Detail">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </a> -->
+                                        <button 
+                                          data-bs-toggle="modal" 
+                                          data-bs-target="#exampleModalUpdate" 
+                                          class="btn btn-datatable btn-icon btn-transparent-dark me-2" 
+                                          title="Edit"
+                                          data-id="<%= dat.id %>"
+                                          data-nama="<%= dat.nama_barang %>"
+                                          data-kategori="<%= dat.kategori %>"
+                                          data-tanggal="<%= dat.tanggal_masuk %>"
+                                          data-kondisi="<%= dat.kondisi %>"
+                                          data-status="<%= dat.status %>"
+                                          data-penanggung="<%= dat.penanggungJawabId %>"
+                                          data-stok="<%= dat.stok %>"
+                                          data-image="<%= dat.image %>"
+                                      >
+                                          <i class="fa-solid fa-pen-to-square"></i>
+                                      </button>
+
+
+                                        <form action="/inventaris/<%= dat.id %>/delete" method="POST" style="display: inline;">
+                                            <button type="submit" class="btn btn-datatable btn-icon btn-transparent-dark" title="Hapus" onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </button>
+                                        </form>
+                                        
+                                    </td>
+                                    <td>
+                                        <a href="/generate/<%= dat.id %>" class="btn btn-success">Generate QR</a>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+             <% if(user.role === "User") { %>
+                <a href="/dashboard-user" class="btn btn-primary">Kembali</a>
+            <%} else { %>
+                <a href="/dashboard" class="btn btn-primary">Kembali</a>
+            <%}%>
+        </div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-light" id="exampleModalLabel">Tambah Barang Inventaris</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form method="post" action="/inventaris/create" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="small mb-1" for="nama_barang">Nama Barang</label>
+                            <input class="form-control" name="nama_barang" id="nama_barang" type="text" placeholder="Masukkan nama barang" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="kategori">Kategori</label>
+                            <select class="form-select" name="kategori" id="kondisi">
+                                <option value="">-- Pilih Kategori --</option>
+                                <option value="Elektronik">Elektronik</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="tanggal_masuk">Tanggal Masuk</label>
+                            <input class="form-control" name="tanggal_masuk" id="tanggal_masuk" type="date" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="kondisi">Kondisi</label>
+                            <select class="form-select" name="kondisi" id="kondisi">
+                                <option value="">-- Pilih Kondisi --</option>
+                                <option value="Baik">Baik</option>
+                                <option value="Rusak">Rusak</option>
+                                <option value="Perlu Perbaikan">Perlu Perbaikan</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="status">Status</label>
+                            <select class="form-select" name="status" id="status">
+                                <option value="Tersedia" selected>Tersedia</option>
+                                <option value="Dipinjam">Dipinjam</option>
+                                <option value="Hilang">Hilang</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                        <label for="stok" class="form-label">Stok</label>
+                        <input type="number" class="form-control" id="stok" name="stok" min="0">
+                      </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="penanggungJawabId">Penanggung Jawab</label>
+                            <select class="form-select" name="penanggungJawabId" id="penanggungJawabId">
+                                <option value="">-- Pilih Penanggung Jawab --</option>
+                                <% penanggung.forEach(item => { %>
+                                    <option value="<%= item.id%>"><%= item.nama%></option>
+                                <%}); %>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                        <label for="image" class="form-label">Gambar (Opsional)</label>
+                        <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                      </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                          </div>
+                    </form>
+                    
+                </div>
+              </div>
+            </div>
+        </div>
+
+
+
+        <!-- Modal Edit Barang -->
+<div class="modal fade" id="exampleModalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+      <div class="modal-header bg-primary ">
+        <h5 class="modal-title text-light" id="exampleModalLabel">Edit Barang Inventaris</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <form method="post" enctype="multipart/form-data">
+  <div class="mb-3">
+    <label for="nama_barang" class="form-label">Nama Barang</label>
+    <input type="text" class="form-control" id="nama_barang" name="nama_barang" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="kategori" class="form-label">Kategori</label>
+    <select class="form-select" id="kategori" name="kategori">
+      <option value="">-- Pilih Kategori --</option>
+      <option value="Elektronik">Elektronik</option>
+      <option value="Furniture">Furniture</option>
+      <option value="Kendaraan">Kendaraan</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="tanggal_masuk" class="form-label">Tanggal Masuk</label>
+    <input type="date" class="form-control" id="tanggal_masuk" name="tanggal_masuk" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="kondisi" class="form-label">Kondisi</label>
+    <select class="form-select" id="kondisi" name="kondisi">
+      <option value="Baik">Baik</option>
+      <option value="Rusak">Rusak</option>
+      <option value="Perlu Perbaikan">Perlu Perbaikan</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="status" class="form-label">Status</label>
+    <select class="form-select" id="status" name="status">
+      <option value="Tersedia">Tersedia</option>
+      <option value="Dipinjam">Dipinjam</option>
+      <option value="Hilang">Hilang</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="stok" class="form-label">Stok</label>
+    <input type="number" class="form-control" id="stok" name="stok" min="0">
+  </div>
+
+  <div class="mb-3">
+    <label for="penanggungJawabId" class="form-label">Penanggung Jawab</label>
+    <select class="form-select" id="penanggungJawabId" name="penanggungJawabId">
+      <option value="">-- Pilih Penanggung Jawab --</option>
+      <% penanggung.forEach(item => { %>
+        <option value="<%= item.id %>"><%= item.nama %></option>
+      <% }); %>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="image" class="form-label">Gambar (Opsional)</label>
+    <input type="file" class="form-control" id="image" name="image" accept="image/*">
+  </div>
+<div id="image-preview" class="mt-2"></div>
+
+
+  <input type="hidden" id="id_barang" name="id_barang">
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+  </div>
+</form>
+
+      </div>
+      
+    </div>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const updateModal = document.getElementById('exampleModalUpdate');
+    updateModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+
+        // Ambil data dari attribute tombol
+        const id = button.getAttribute('data-id');
+        const nama = button.getAttribute('data-nama');
+        const kategori = button.getAttribute('data-kategori');
+        const tanggal = button.getAttribute('data-tanggal');
+        const kondisi = button.getAttribute('data-kondisi');
+        const status = button.getAttribute('data-status');
+        const penanggung = button.getAttribute('data-penanggung');
+        const stok = button.getAttribute('data-stok');
+        const image = button.getAttribute('data-image');
+
+        // Set nilai input di dalam form modal
+        updateModal.querySelector('#nama_barang').value = nama;
+        updateModal.querySelector('#kategori').value = kategori;
+        updateModal.querySelector('#tanggal_masuk').value = tanggal;
+        updateModal.querySelector('#kondisi').value = kondisi;
+        updateModal.querySelector('#status').value = status;
+        updateModal.querySelector('#penanggungJawabId').value = penanggung;
+        updateModal.querySelector('#stok').value = stok;
+
+        // (Opsional) tampilkan nama file lama atau preview
+        if (image) {
+            const imagePreview = updateModal.querySelector('#image-preview');
+            if (imagePreview) {
+              imagePreview.innerHTML = `<p class="text-muted">Gambar saat ini:</p>
+  <img src="/uploads/${image}" alt="Preview Gambar" class="img-thumbnail mt-1" width="120">
+`;
+
+            }
+        }
+
+        // Set form action
+        updateModal.querySelector('form').setAttribute('action', `/inventaris/${id}/update`);
+    });
+});
+</script>
+

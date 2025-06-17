@@ -1,0 +1,280 @@
+<div class="container-xl px-4 mt-n10">
+            <div class="card mb-4">
+                <div class="card-header">Extended Data Tables</div>
+                <div class="card-body">
+                    <table id="datatablesSimple">
+                    
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Tambah Data
+                        </button>
+                        
+
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>NIP</th>
+                                <th>Jabatan</th>
+                                <th>Departemen</th>
+                                <th>Email</th>
+                                <th>Telepon</th>
+                                <th>Alamat</th>
+                                <th>User ID</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% datas.forEach((dat, index) => { %>
+                                <tr>
+                                    <td><%= index + 1 %></td>
+                                    <td><%= dat.nama %></td>
+                                    <td><%= dat.nip %></td>
+                                    <td><%= dat.jabatan_id %></td>
+                                    <td><%= dat.departemen %></td>
+                                    <td><%= dat.email %></td>
+                                    <td><%= dat.telepon %></td>
+                                    <td><%= dat.alamat %></td>
+                                    <td><%= dat.userId %></td>
+                                    <td>
+
+                                        <!-- Tombol Edit -->
+                                        <button 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#exampleModalUpdate" 
+                                                class="btn btn-datatable btn-icon btn-transparent-dark me-2" 
+                                                title="Edit"
+                                                data-id="<%= dat.id %>"
+                                                data-nama="<%= dat.nama %>"
+                                                data-nip="<%= dat.nip %>"
+                                                data-jabatan_id="<%= dat.jabatan_id %>"
+                                                data-alamat="<%= dat.alamat %>"
+                                                data-departemen="<%= dat.departemen %>"
+                                                data-email="<%= dat.email %>"
+                                                data-telepon="<%= dat.telepon %>"
+                                                data-userid="<%= dat.userId %>"
+                                            >
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+                                        <!-- Tombol Hapus -->
+                                        <form action="/penanggung-jawab/delete/<%= dat.id %>" method="POST" style="display: inline;">
+                                            <button type="submit" class="btn btn-datatable btn-icon btn-transparent-dark" title="Hapus" onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+             <% if(user.role === "User") { %>
+                <a href="/dashboard-user" class="btn btn-primary">Kembali</a>
+            <%} else { %>
+                <a href="/dashboard" class="btn btn-primary">Kembali</a>
+            <%}%>
+        </div>
+        
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header bg-primary">
+                  <h5 class="modal-title text-light" id="exampleModalLabel">Tambah Penanggung Jawab</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="/penanggung-jawab">
+                        <div class="mb-3">
+                            <label class="small mb-1" for="nama">Nama</label>
+                            <input class="form-control" name="nama" id="nama" type="text" placeholder="Masukkan Nama " required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="nip">NIP</label>
+                            <input class="form-control" name="nip" id="nip" type="text" placeholder="Masukkan NIP" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="jabatan_id">Jabatan</label>
+                            <select class="form-select" name="jabatan_id" id="jabatan_id">
+                                <option value="">-- Pilih Jabatan --</option>
+                                <% jabatans.forEach(jab => { %>
+                                    <option value="<%= jab.id %>"><%= jab.jabatan %></option>
+                                <%}); %>
+                            </select>
+                        </div>
+                         <div class="mb-3">
+                            <label class="small mb-1" for="alamat">Alamat</label>
+                            <input class="form-control" name="alamat" id="alamat" type="text" placeholder="Masukkan Nama " required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="departemen">Departemen</label>
+                            <select class="form-select" name="departemen" id="departemen">
+                                <option value="">-- Pilih Departemen --</option>
+                                    <option value="Dinas Komunikasi dan Informatika">Dinas Komunikasi dan Informatika</option>
+                                    <option value="Dinas Pendidikan dan Kebudayaan">Dinas Pendidikan dan Kebudayaan</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="email">Email</label>
+                            <input class="form-control" name="email" id="email" type="email" placeholder="Masukkan Email"  />
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="telepon">No Telp</label>
+                            <input class="form-control" name="telepon" id="telepon" type="number"  placeholder="Masukkan Nomor Aktif" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="userId" class="form-label">Pilih User</label>
+                            <select class="form-select" id="userId" name="userId" required>
+  <option value="">-- Pilih User --</option>
+  <% users.forEach(user => { %>
+    <option 
+      value="<%= user.id %>" 
+      data-nama="<%= user.name %>" 
+      data-email="<%= user.email %>">
+      <%= user.email %>
+    </option>
+  <% }) %>
+</select>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                          </div>
+                    </form>
+                    
+                </div>
+              </div>
+            </div>
+        </div>
+
+
+       <div class="modal fade" id="exampleModalUpdate" tabindex="-1" aria-labelledby="exampleModalLabelUpdate" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title text-light" id="exampleModalLabelUpdate">Update Penanggung Jawab</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       <form method="post" action="/penanggung-jawab/update" id="formUpdatePenanggungJawab">
+
+          <input type="hidden" name="id" id="update-id" />
+
+          <div class="mb-3">
+            <label class="small mb-1" for="update-nama">Nama</label>
+            <input class="form-control" name="nama" id="update-nama" type="text" placeholder="Masukkan Nama" required />
+          </div>
+          <div class="mb-3">
+            <label class="small mb-1" for="update-nip">NIP</label>
+            <input class="form-control" name="nip" id="update-nip" type="text" placeholder="Masukkan NIP" required />
+          </div>
+          <div class="mb-3">
+            <label class="small mb-1" for="update-jabatan_id">Jabatan</label>
+            <select class="form-select" name="jabatan_id" id="update-jabatan_id">
+              <option value="">-- Pilih Jabatan --</option>
+              <% jabatans.forEach(jab => { %>
+                <option value="<%= jab.id %>"><%= jab.jabatan %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="small mb-1" for="update-alamat">Alamat</label>
+            <input class="form-control" name="alamat" id="update-alamat" type="text" placeholder="Masukkan Alamat" required />
+          </div>
+          <div class="mb-3">
+            <label class="small mb-1" for="update-departemen">Departemen</label>
+            <select class="form-select" name="departemen" id="update-departemen">
+              <option value="">-- Pilih Departemen --</option>
+              <option value="Dinas Komunikasi dan Informatika">Dinas Komunikasi dan Informatika</option>
+              <option value="Dinas Pendidikan dan Kebudayaan">Dinas Pendidikan dan Kebudayaan</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="small mb-1" for="update-email">Email</label>
+            <input class="form-control" name="email" id="update-email" type="email" placeholder="Masukkan Email" />
+          </div>
+          <div class="mb-3">
+            <label class="small mb-1" for="update-telepon">No Telp</label>
+            <input class="form-control" name="telepon" id="update-telepon" type="number" placeholder="Masukkan Nomor Aktif" />
+          </div>
+          <div class="mb-3">
+            <label for="update-userId" class="form-label">Pilih User</label>
+            <select class="form-select" id="update-userId" name="userId" required>
+              <option value="">-- Pilih User --</option>
+              <% users.forEach(use => { %>
+                <option value="<%= use.id %>"><%= use.email %></option>
+              <% }); %>
+            </select>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Update Data</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const updateModal = document.getElementById('exampleModalUpdate');
+  const formUpdate = document.getElementById('formUpdatePenanggungJawab');
+
+  updateModal.addEventListener('show.bs.modal', function (event) {
+    const button = event.relatedTarget;
+
+    const id = button.getAttribute('data-id');
+    const nama = button.getAttribute('data-nama');
+    const nip = button.getAttribute('data-nip');
+    const jabatan_id = button.getAttribute('data-jabatan_id');
+    const alamat = button.getAttribute('data-alamat');
+    const departemen = button.getAttribute('data-departemen');
+    const email = button.getAttribute('data-email');
+    const telepon = button.getAttribute('data-telepon');
+    const userId = button.getAttribute('data-userid');
+
+    // Set action form agar mengarah ke route dengan param id
+    formUpdate.action = `/penanggung-jawab/update/${id}`;
+
+    // Isi input form
+    updateModal.querySelector('#update-nama').value = nama;
+    updateModal.querySelector('#update-nip').value = nip;
+    updateModal.querySelector('#update-jabatan_id').value = jabatan_id;
+    updateModal.querySelector('#update-alamat').value = alamat;
+    updateModal.querySelector('#update-departemen').value = departemen;
+    updateModal.querySelector('#update-email').value = email;
+    updateModal.querySelector('#update-telepon').value = telepon;
+    updateModal.querySelector('#update-userId').value = userId;
+  });
+
+
+
+   document.addEventListener('DOMContentLoaded', function () {
+    const namaInput = document.getElementById('nama');
+    const emailInput = document.getElementById('email');
+    const userSelect = document.getElementById('userId');
+
+    namaInput.addEventListener('input', function () {
+      const namaValue = namaInput.value.trim().toLowerCase();
+      let matched = false;
+
+      for (let i = 0; i < userSelect.options.length; i++) {
+        const option = userSelect.options[i];
+        const userNama = option.getAttribute('data-nama')?.trim().toLowerCase();
+
+        if (userNama && userNama === namaValue) {
+          userSelect.value = option.value;
+          emailInput.value = option.getAttribute('data-email');
+          matched = true;
+          break;
+        }
+      }
+
+      if (!matched) {
+        userSelect.value = '';
+        emailInput.value = '';
+      }
+    });
+  });
+</script>

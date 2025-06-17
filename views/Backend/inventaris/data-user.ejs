@@ -1,0 +1,132 @@
+<div class="container-xl px-4 mt-n10">
+            <div class="card mb-4">
+                <div class="card-header">Extended Data Tables</div>
+                <div class="card-body">
+                    <table id="datatablesSimple">
+                    
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Tambah Data
+                        </button>
+
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% datas.forEach((dat, index) => { %>
+                                <tr>
+                                    <td><%= index + 1 %></td>
+                                    <td><%= dat.name %></td>
+                                    <td><%= dat.email %></td>
+                                    <td><%= dat.role %></td>
+                                    <td>
+                                       <!-- Tombol Detail -->
+                                        <!-- <button class="btn btn-datatable btn-icon btn-transparent-dark me-2" title="Lihat Detail">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button> -->
+
+                                        <!-- Tombol Edit -->
+                                        <button class="btn btn-datatable btn-icon btn-transparent-dark me-2" data-bs-toggle="modal" data-bs-target="#modalUpdateUser<%= user.id %>">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+
+
+                                        <!-- Tombol Hapus -->
+                                        <form action="/users/delete/<%= dat.id %>" method="POST" style="display: inline;">
+                                            <button type="submit" class="btn btn-datatable btn-icon btn-transparent-dark" title="Hapus" onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+             <% if(user.role === "User") { %>
+                <a href="/dashboard-user" class="btn btn-primary">Kembali</a>
+            <%} else { %>
+                <a href="/dashboard" class="btn btn-primary">Kembali</a>
+            <%}%>
+        </div>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header bg-primary">
+                  <h5 class="modal-title text-light" id="exampleModalLabel">Tambah User</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="/admin-post-user">
+                        <div class="mb-3">
+                            <label class="small mb-1" for="name">Nama</label>
+                            <input class="form-control" name="name" id="name" type="text" placeholder="Masukkan Nama" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="email">Email</label>
+                            <input class="form-control" name="email" id="email" type="email" placeholder="Masukkan Email" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="password">Password</label>
+                            <input class="form-control" name="password" id="password" type="password" placeholder="Masukkan Password" required />
+                        </div>
+                         <div class="mb-3">
+                            <label class="small mb-1" for="password">Konfirmasi Password</label>
+                            <input class="form-control" name="confPassword" id="password" type="password" placeholder="Konfirmasi Password" required />
+                        </div>
+                         <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                          </div>
+                    </form>
+                </div>
+              </div>
+            </div>
+        </div>
+
+
+        <!-- Modal Update User -->
+<div class="modal fade" id="modalUpdateUser<%= user.id %>" tabindex="-1" aria-labelledby="modalUpdateUserLabel<%= user.id %>" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="/users/update/<%= user.id %>" method="POST">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="modalUpdateUserLabel<%= user.id %>">Edit Data User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="name<%= user.id %>" class="form-label">Nama</label>
+            <input type="text" name="name" class="form-control" id="name<%= user.id %>" value="<%= user.name %>" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="email<%= user.id %>" class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" id="email<%= user.id %>" value="<%= user.email %>" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="role<%= user.id %>" class="form-label">Role</label>
+            <select class="form-select" name="role" id="role<%= user.id %>">
+              <option value="User" <%= user.role === 'User' ? 'selected' : '' %>>User</option>
+              <option value="Admin" <%= user.role === 'Admin' ? 'selected' : '' %>>Admin</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

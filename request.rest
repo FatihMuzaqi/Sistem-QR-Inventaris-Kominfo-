@@ -1,0 +1,56 @@
+GET http://localhost:3000/users
+
+
+###
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "name":"admin",
+    "email":"admin@gmail.com",
+    "password":"admin123",
+    "confPassword":"admin123"
+}
+
+###
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "email":"admin@gmail.com",
+    "password":"admin123"
+}
+
+###
+POST http://localhost:3000/logout
+
+###
+
+POST http://localhost:3000/barang
+Content-Type: application/json
+
+{
+    "nama_barang":"barang 1",
+    "kode_barang":"BRG001",
+    "tanggal_laporan": "2024-12-30",
+    "deskripsi_barang":"vfhvbdujvnwoienfcweivnceofnvweinfcienv",
+    "inventoryId":"1",
+    "level_kerusakan":"Ringan",
+    "status":"Diperbaiki",
+    "image":""
+}
+
+###
+POST http://localhost:3000/add-peminjaman
+Content-Type: application/json
+
+{
+    "inventarisBarangId":"1",
+    "nama_peminjam":"Fatih",
+    "email_peminjam":"fatih@gmail.com",
+    "telp_peminjam":"22204026",
+    "tanggal_pinjam":"2024-12-30",
+    "tanggal_kembali":"2024-12-31",
+    "keperluan":"Keperluan administrasi pendataan",
+    "status":"Dipinjam",
+}

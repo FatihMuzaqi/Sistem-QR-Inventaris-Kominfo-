@@ -1,0 +1,154 @@
+<%
+function getBadgeColor(level) {
+    if (level === 'Baik') return 'bg-success';   // Hijau
+    if (level === 'Perlu Perbaikan') return 'bg-warning';  // Kuning
+    if (level === 'Rusak') return 'bg-danger';    // Merah
+    return 'bg-secondary';                        // Abu-abu kalau tidak dikenal
+}
+%>
+
+<%
+function getBadgeColorStatus(lv) {
+    if (lv === 'Diterima') return 'bg-success';   // Hijau
+    if (lv === 'Ditolak') return 'bg-danger';  // Kuning
+    if (lv === 'Dalam Proses') return 'bg-warning';    // Merah
+    if (lv === 'Selesai') return 'bg-info';    // Merah
+    return 'bg-secondary';                        // Abu-abu kalau tidak dikenal
+}
+%>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content p-3">
+        <!-- Status Info -->
+        <div class="mb-3">
+          <label for="inputGroupSelect04" class="form-label">Status Laporan</label>
+          <form id="statusForm" method="POST" class="d-flex align-items-center gap-2">
+            <select class="form-select flex-grow-1" id="inputGroupSelect04" name="status_laporan">
+                <option selected id="modalStatus">Pilih status</option>
+                <option value="Diterima">Diterima</option>
+                <option value="Ditolak">Ditolak</option>
+            </select>
+            <button class="btn btn-outline-primary" type="submit">Kirim</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="container-xl px-4 mt-n10">
+    <div class="card mb-4">
+        <div class="card-header">Extended Data Tables</div>
+        <div class="card-body">
+            <style>
+                #datatablesSimple .description-column {
+                    max-width: 200px;
+                    white-space: normal;
+                    word-wrap: break-word;
+                    vertical-align: top;
+                }
+            </style>
+            <table id="datatablesSimple">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Barang</th>
+                        <th>Penanggung Jawab</th>
+                        <th>Nama Peminjam</th>
+                        <th>Email Peminjam</th>
+                        <th>Tanggal Peminjam</th>
+                        <th>Tanggal Kembali</th>
+                        <th>Keperluan</th>
+                        <th>Status Peminjam</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <% datas.forEach((data, index) => { %>
+                    <tr>
+                      <td><%= index + 1 %></td>
+                      <td><%= data.inventarisBarangId %></td>
+                      <td><%= data.penanggungJawabId %></td>
+                      <td><%= data.nama_peminjam%></td>
+                      <td><%= data.email_peminjam %></td>
+                      <td><%= data.tanggal_pinjam%></td>
+                      <td><%= data.tanggal_kembali%></td>
+                      <td><%= data.keperluan %></td>
+                      <td>
+                        <div class="badge <%= getBadgeColorStatus(data.status_peminjaman) %> text-white rounded-pill">
+                          <%= data.status_peminjaman %>
+                        </div>
+                      </td>
+                    </tr>
+                  <% }) %>
+                  </tbody>
+            </table>
+        </div>
+    </div>
+      <% if(user.role === "User") { %>
+                <a href="/dashboard-user" class="btn btn-primary">Kembali</a>
+            <%} else { %>
+                <a href="/dashboard" class="btn btn-primary">Kembali</a>
+            <%}%>
+    </div>
+    
+<!-- Modal Preview Gambar -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="imageModalLabel">Pratinjau Gambar Kerusakan</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+          <img
+            id="modalImage"
+            src=""
+            alt="Preview Gambar"
+            style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.3);"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+    function openImageModal(imageSrc) {
+    const modalImage = document.getElementById("modalImage");
+    modalImage.src = "/images/" + imageSrc;
+    const modal = new bootstrap.Modal(document.getElementById("imageModal"));
+    modal.show();
+}
+
+    const modal = document.getElementById('staticBackdrop');
+    modal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget; 
+        const id = button.getAttribute('data-id');
+        const status = button.getAttribute('data-status');
+
+        const modalStatus = modal.querySelector('#modalStatus');
+        modalStatus.textContent = `${status}`;
+    });
+
+    const report_id = document.getElementById('report_id');
+    modal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget; 
+        const id = button.getAttribute('data-id');
+        report_id.value = id;
+    });
+
+  const modalForm = document.getElementById('staticBackdrop');
+  modalForm.addEventListener('show.bs.modal', function (event) {
+    const button = event.relatedTarget;
+    const id = button.getAttribute('data-id');
+    const status = button.getAttribute('data-status');
+
+    document.getElementById('modalStatus').textContent = status;
+    document.getElementById('modalStatus').value = status;
+
+    const form = document.getElementById('statusForm');
+    form.action = `/update-status-laporan/${id}`;
+  });
+
+
+</script>

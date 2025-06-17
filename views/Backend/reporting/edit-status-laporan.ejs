@@ -1,0 +1,25 @@
+<div class="container mt-5">
+    <div class="card mx-auto" style="max-width: 600px;">
+      <div class="card-body">
+        <h4 class="card-title mb-4 text-center">Edit Status Laporan</h4>
+  
+        <form action="/update-status-laporan/<%= laporan.id %>?_method=PUT" method="POST">
+          <!-- Status Laporan -->
+          <div class="mb-3">
+            <label for="status_laporan" class="form-label">Status Laporan</label>
+            <select name="status_laporan" id="status_laporan" class="form-select" required>
+              <option value="Dalam Proses" <%= laporan.status_laporan === 'Dalam Proses' ? 'selected' : '' %>>Dalam Proses</option>
+              <option value="Diterima" <%= laporan.status_laporan === 'Diterima' ? 'selected' : '' %>>Diterima</option>
+              <option value="Ditolak" <%= laporan.status_laporan === 'Ditolak' ? 'selected' : '' %>>Ditolak</option>
+            </select>
+          </div>
+  
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-success">Simpan</button>
+            <a href="/laporan" class="btn btn-secondary">Batal</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

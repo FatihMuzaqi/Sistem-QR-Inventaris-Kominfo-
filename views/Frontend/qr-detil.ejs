@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Produk</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      margin-top: 30px;
+    }
+    
+    .card-header {
+      background-color: #0080ff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .card-header h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+    
+    .badge-good {
+      background-color: #27ae60;
+      color: white;
+    }
+    
+    .badge-damaged {
+      background-color: #e74c3c;
+      color: white;
+    }
+    
+    .badge-used {
+      background-color: #f39c12;
+      color: white;
+    }
+    
+    .card-body {
+      padding: 25px;
+    }
+    
+    .product-info {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .info-item {
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .info-item:last-child {
+      border-bottom: none;
+    }
+    
+    .info-label {
+      font-size: 14px;
+      color: #7f8c8d;
+      margin-bottom: 5px;
+    }
+    
+    .info-value {
+      font-size: 16px;
+      font-weight: 500;
+      color: #2c3e50;
+    }
+    
+    .card-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .btn {
+      display: block;
+      padding: 12px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background-color: #3498db;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #2980b9;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-report {
+      background-color: #e74c3c;
+      color: white;
+    }
+    
+    .btn-report:hover {
+      background-color: #c0392b;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="text-light">Informasi Barang</h4>
+      </div>
+      
+      <div class="card-body">
+        <div class="product-info">
+          <div class="info-item">
+            <div class="info-label">Nama Barang</div>
+            <div class="info-value"><%= datas.nama_barang %></div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-label">Kode Barang</div>
+            <div class="info-value"><%= datas.kode_barang %></div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-label">Penanggung Jawab</div>
+            <div class="info-value"><%= datas.penanggungJawab.nama %></div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-label">Kondisi</div>
+            <div>
+              <% if (datas.kondisi === 'Baik') { %>
+                <span class="badge badge-good">Kondisi Baik</span>
+              <% } else if (datas.kondisi === 'Rusak') { %>
+                <span class="badge badge-damaged">Kondisi Rusak</span>
+              <% } else { %>
+                <span class="badge badge-used">Kondisi <%= datas.kondisi %></span>
+              <% } %>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <div class="info-label">Kategori</div>
+            <div class="info-value"><%= datas.kategori %></div>
+          </div>
+          
+          <div class="info-item">
+            <div class="info-label">Tanggal Masuk</div>
+            <div class="info-value"><%= datas.tanggal_masuk %></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card-footer">
+        <a href="/form-peminjaman/<%= datas.id %>" class="btn btn-success">Ajukan Peminjaman</a>
+        <a href="/form-laporan/<%= datas.id %>" class="btn btn-report">Laporkan Barang</a>
+        <a href="/daftar-barang" class="btn btn-primary">Kembali</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html> 

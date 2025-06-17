@@ -1,0 +1,83 @@
+    <style>
+        .list-group-item {
+  display: flex;
+  align-items: center;
+}
+
+.label {
+  width: 200px; /* Sesuaikan lebarnya sesuai kebutuhan */
+  font-weight: bold;
+}
+
+.separator {
+  margin: 0 5px;
+}
+
+.value {
+  flex: 1;
+}
+
+</style>
+    
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="card" style="width: 50rem;">
+
+          <% if (messages.success && messages.success.length > 0) { %>
+            <div class="alert alert-success alert-dismissible fade show mt-3 mx-3" role="alert">
+              <%= messages.success[0] %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% } %>
+
+            <h5 class="text-center m-5">Laporan Kerusakan Barang Inventaris</h5>
+            <% if (datas.status_laporan === "Diterima") { %>
+              <div class="alert alert-success alert-dismissible fade show mt-3 mx-3" role="alert">
+                ✅ Laporan telah diterima dan dikonfirmasi.
+              </div>
+            <% } else if (datas.status_laporan === "Ditolak") { %>
+              <div class="alert alert-danger alert-dismissible fade show mt-3 mx-3" role="alert">
+                ❌ Laporan ditolak. Silakan periksa kembali detail laporan Anda.
+              </div>
+            <% } else if (datas.status_laporan === "Dalam Proses") { %>
+              <div class="alert alert-warning alert-dismissible fade show mt-3 mx-3" role="alert">
+                ⏳ Laporan sedang dalam proses pemeriksaan.
+              </div>
+            <% } %>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <img src="/images/<%= datas.images  %>" class="card-img-top" alt="...">
+              </li>
+                <li class="list-group-item">
+                  <span class="label">Nama Barang</span>
+                  <span class="separator">:</span>
+                  <span class="value"><%= datas.inventaris.nama_barang %></span>
+                </li>
+                <li class="list-group-item">
+                  <span class="label">Deskripsi Kerusakan</span>
+                  <span class="separator">:</span>
+                  <span class="value"><%= datas.deskripsi %></span>
+                </li>
+                <li class="list-group-item">
+                  <span class="label">Penanggung Jawab</span>
+                  <span class="separator">:</span>
+                  <span class="value"><%= datas.penanggungJawab.nama %></span>
+                </li>
+                <li class="list-group-item">
+                  <span class="label">Kondisi</span>
+                  <span class="separator">:</span>
+                  <span class="value"><%= datas.kondisi_laporan %></span>
+                </li>
+                <li class="list-group-item">
+                  <span class="label">Tanggal Laporan</span>
+                  <span class="separator">:</span>
+                  <span class="value"><%= datas.tanggal_laporan %></span>
+                </li>
+              </ul>
+            <div class="card-body">
+            <a href="#" class="card-link">Card link</a>
+            <a href="#" class="card-link">Another link</a>
+            </div>
+        </div>
+    </div>
+</div>
